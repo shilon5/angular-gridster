@@ -153,6 +153,9 @@
 			 * @param {Object} item The item to insert
 			 */
 			this.autoSetItemPosition = function(item) {
+
+				item.sizeX = Math.min(Math.max(item.minSizeX, item.sizeX), this.columns);
+
 				// walk through each row and column looking for a place it will fit
 				for (var rowIndex = 0; rowIndex < this.maxRows; ++rowIndex) {
 					for (var colIndex = 0; colIndex < this.columns; ++colIndex) {
@@ -668,6 +671,7 @@
 
 							gridster.isMobile = gridster.mobileModeEnabled && gridster.curWidth <= gridster.mobileBreakPoint;
 
+							var items = [];
 							// loop through all items and reset their CSS
 							for (var rowIndex = 0, l = gridster.grid.length; rowIndex < l; ++rowIndex) {
 								var columns = gridster.grid[rowIndex];
@@ -678,12 +682,28 @@
 								for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
 									if (columns[colIndex]) {
 										var item = columns[colIndex];
-										item.setElementPosition();
-										item.setElementSizeY();
-										item.setElementSizeX();
+
+										delete item.row;
+										delete item.col;
+										items.push(item);
+										/*
+																				item.setElementPosition();
+																				item.setElementSizeY();
+																				item.setElementSizeX();
+										*/
 									}
 								}
 							}
+
+
+							gridster.grid = [];
+							gridster.putItems(items);
+							items.forEach(function(item) {
+								item.setElementPosition();
+								item.setElementSizeY();
+								item.setElementSizeX();
+							});
+
 
 							updateHeight();
 						}
