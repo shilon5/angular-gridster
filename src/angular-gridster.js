@@ -652,6 +652,10 @@
 								gridster.curWidth = gridster.width;
 							}
 
+							if (gridster.minColWidth) {
+								gridster.columns = Math.max(gridster.minColumns, Math.floor(gridster.curWidth / gridster.minColWidth));
+							}
+
 							if (gridster.colWidth === 'auto') {
 								gridster.curColWidth = (gridster.curWidth + (gridster.outerMargin ? -gridster.margins[1] : gridster.margins[1])) / gridster.columns;
 							} else {
@@ -790,9 +794,11 @@
 						// track element width changes any way we can
 						var onResize = gridsterDebounce(function onResize() {
 							resize();
-							$timeout(function() {
-								scope.$apply();
-							});
+							/*
+														$timeout(function() {
+															scope.$apply();
+														});
+							*/
 						}, 100);
 
 						scope.$watch(function() {
@@ -2028,8 +2034,8 @@
 								col: item.col,
 								sizeX: item.sizeX,
 								sizeY: item.sizeY,
-								minSizeX: 0,
-								minSizeY: 0,
+								minSizeX: item.minSizeX || 1,
+								minSizeY: item.minSizeY || 1,
 								maxSizeX: null,
 								maxSizeY: null
 							};
