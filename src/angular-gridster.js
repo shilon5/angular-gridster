@@ -27,6 +27,7 @@
 		swapping: false, // whether or not to have items switch places instead of push down if they are the same size
 		width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
 		colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
+		minColWidth: 220, // minimum width of grid columns. will determine the columns
 		rowHeight: 'match', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
 		margins: [10, 10], // margins in between grid items
 		outerMargin: true,
@@ -460,6 +461,25 @@
 				this.putItem(item, item.row, item.col, ignoreItems);
 			};
 
+			this.getAllItems = function() {
+				var items = [];
+				for (var rowIndex = 0, l = this.grid.length; rowIndex < l; ++rowIndex) {
+					var columns = this.grid[rowIndex];
+					if (!columns) {
+						continue;
+					}
+					for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
+						var item = columns[colIndex];
+						if (item) {
+							items.push(item);
+						}
+					}
+				}
+
+				return items;
+			};
+
+
 			/**
 			 * Moves all items up as much as possible
 			 */
@@ -638,10 +658,14 @@
 							return ele.style.visibility !== 'hidden' && ele.style.display !== 'none';
 						};
 
+						var hasSize = function(ele) {
+							return ele.offsetWidth > 0 && ele.offsetHeight > 0;
+						};
+
 						function refresh(config) {
 							gridster.setOptions(config);
 
-							if (!isVisible($elem[0])) {
+							if (!isVisible($elem[0]) || !hasSize($elem[0])) {
 								return;
 							}
 
@@ -675,7 +699,6 @@
 
 							gridster.isMobile = gridster.mobileModeEnabled && gridster.curWidth <= gridster.mobileBreakPoint;
 
-							var items = [];
 							// loop through all items and reset their CSS
 							for (var rowIndex = 0, l = gridster.grid.length; rowIndex < l; ++rowIndex) {
 								var columns = gridster.grid[rowIndex];
@@ -686,28 +709,12 @@
 								for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
 									if (columns[colIndex]) {
 										var item = columns[colIndex];
-
-										delete item.row;
-										delete item.col;
-										items.push(item);
-										/*
-																				item.setElementPosition();
-																				item.setElementSizeY();
-																				item.setElementSizeX();
-										*/
+										item.setElementPosition();
+										item.setElementSizeY();
+										item.setElementSizeX();
 									}
 								}
 							}
-
-
-							gridster.grid = [];
-							gridster.putItems(items);
-							items.forEach(function(item) {
-								item.setElementPosition();
-								item.setElementSizeY();
-								item.setElementSizeX();
-							});
-
 
 							updateHeight();
 						}
@@ -782,37 +789,59 @@
 								$elem.removeClass('gridster-loaded');
 							}
 
+
+							/*var oldColumns = gridster.columns;*/
+
+
 							refresh();
 
 							if (gridster.loaded) {
+								/*if (oldColumns !== gridster.columns)*/
+								{
+
+									var allItems = gridster.getAllItems();
+
+									for (var i = 0; i < allItems.length; i++) {
+										var item = allItems[i];
+										gridster.autoSetItemPosition(item);
+									}
+								}
+
 								$elem.addClass('gridster-loaded');
 							}
+
+
 
 							$rootScope.$broadcast('gridster-resized', [width, $elem[0].offsetHeight], gridster);
 						};
 
+
+
 						// track element width changes any way we can
 						var onResize = gridsterDebounce(function onResize() {
 							resize();
-							/*
-														$timeout(function() {
-															scope.$apply();
-														});
-							*/
+							scope.$evalAsync();
 						}, 100);
 
-						scope.$watch(function() {
-							return isVisible($elem[0]);
-						}, onResize);
+						/*
+												scope.$watch(function() {
+													return isVisible($elem[0]) && hasSize($elem[0]);
+												}, onResize);
+						*/
 
 						// see https://github.com/sdecima/javascript-detect-element-resize
 						if (typeof window.addResizeListener === 'function') {
 							window.addResizeListener($elem[0], onResize);
 						} else {
-							scope.$watch(function() {
-								return $elem[0].offsetWidth || parseInt($elem.css('width'), 10);
-							}, resize);
+
+							console.error('no resize listener');
+							/*
+														scope.$watch(function() {
+															return $elem[0].offsetWidth || parseInt($elem.css('width'), 10);
+														}, resize);
+							*/
 						}
+
 						var $win = angular.element($window);
 						$win.on('resize', onResize);
 
