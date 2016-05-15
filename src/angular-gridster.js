@@ -168,6 +168,8 @@
 						}
 					}
 				}
+
+				console.error('unable to place item', item);
 				throw new Error('Unable to place item!');
 			};
 
@@ -776,6 +778,7 @@
 						});
 
 						var prevWidth = $elem[0].offsetWidth || parseInt($elem.css('width'), 10);
+						var prevColumns = 0;
 
 						var resize = function() {
 							var width = $elem[0].offsetWidth || parseInt($elem.css('width'), 10);
@@ -796,8 +799,9 @@
 							refresh();
 
 							if (gridster.loaded) {
-								/*if (oldColumns !== gridster.columns)*/
-								{
+								if (prevColumns !== gridster.columns) {
+									//console.log('resize - columns changed from '+  prevColumns + ' into ' + gridster.columns);
+									prevColumns = gridster.columns;
 
 									var allItems = gridster.getAllItems();
 
