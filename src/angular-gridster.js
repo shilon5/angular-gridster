@@ -566,7 +566,7 @@
 					pixels += this.margins[0] / 2;
 				}
 
-				if (ceilOrFloor !== false) {
+				if (ceilOrFloor === true) {
 					return Math.ceil(pixels / this.curRowHeight);
 				} else if (ceilOrFloor === false) {
 					return Math.floor(pixels / this.curRowHeight);
@@ -587,7 +587,7 @@
 					pixels += this.margins[1] / 2;
 				}
 
-				if (ceilOrFloor !== false) {
+				if (ceilOrFloor === true) {
 					return Math.ceil(pixels / this.curColWidth);
 				} else if (ceilOrFloor === false) {
 					return Math.floor(pixels / this.curColWidth);
@@ -791,10 +791,6 @@
 							if (gridster.loaded) {
 								$elem.removeClass('gridster-loaded');
 							}
-
-
-							/*var oldColumns = gridster.columns;*/
-
 
 							refresh();
 
