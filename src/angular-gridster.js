@@ -1644,7 +1644,8 @@
 							$dragHandles = angular.element($el[0].querySelectorAll(gridster.draggable.handle));
 							if ($dragHandles.length === 0) {
 								// fall back to element if handle not found...
-								$dragHandles = $el;
+								//$dragHandles = $el;
+								console.error('cannot find handles');
 							}
 						} else {
 							$dragHandles = $el;
@@ -2169,11 +2170,13 @@
 					var updateResizable = function() {
 						resizable.toggle(!gridster.isMobile && gridster.resizable && gridster.resizable.enabled);
 					};
+
 					updateResizable();
 
 					var updateDraggable = function() {
 						draggable.toggle(!gridster.isMobile && gridster.draggable && gridster.draggable.enabled);
 					};
+
 					updateDraggable();
 
 					scope.$on('gridster-draggable-changed', updateDraggable);
