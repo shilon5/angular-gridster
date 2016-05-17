@@ -2164,7 +2164,6 @@
 						return item.sizeY + ',' + item.sizeX + ',' + item.minSizeX + ',' + item.maxSizeX + ',' + item.minSizeY + ',' + item.maxSizeY;
 					}, sizeChanged);
 
-					var draggable = new GridsterDraggable($el, scope, gridster, item, options);
 					var resizable = new GridsterResizable($el, scope, gridster, item, options);
 
 					var updateResizable = function() {
@@ -2172,6 +2171,8 @@
 					};
 
 					updateResizable();
+
+					var draggable = new GridsterDraggable($el, scope, gridster, item, options);
 
 					var updateDraggable = function() {
 						draggable.toggle(!gridster.isMobile && gridster.draggable && gridster.draggable.enabled);
