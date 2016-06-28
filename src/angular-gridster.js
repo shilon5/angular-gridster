@@ -43,7 +43,7 @@
 		maxSizeX: null, // maximum column width of an item
 		minSizeY: 1, // minumum row height of an item
 		maxSizeY: null, // maximum row height of an item
-		saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
+		saveGridItemCalculatedHeightInMobile: true, // grid item height in mobile display. true- to use the calculated height by sizeY given
 		resizable: { // options to pass to resizable handler
 			enabled: true,
 			handles: ['s', 'e', 'n', 'w', 'se', 'ne', 'sw', 'nw']
