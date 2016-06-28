@@ -1026,7 +1026,8 @@
 			if (this.gridster.isMobile && !this.gridster.saveGridItemCalculatedHeightInMobile) {
 				this.$element.css('height', '');
 			} else {
-				this.$element.css('height', (this.sizeY * this.gridster.curRowHeight - this.gridster.margins[0]) + 'px');
+				var sizeY = this.gridster.isMobile ? 1 : this.sizeY;
+				this.$element.css('height', (sizeY * this.gridster.curRowHeight - this.gridster.margins[0]) + 'px');
 			}
 		};
 
