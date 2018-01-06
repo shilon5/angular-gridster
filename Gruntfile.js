@@ -116,6 +116,7 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.registerTask('build', ['uglify', 'less']);
 	grunt.registerTask('default', ['jsbeautifier', 'jshint', 'uglify', 'less']);
 
 	grunt.registerTask('dev', ['connect:dev', 'karma:unit:start', 'watch:dev']);
