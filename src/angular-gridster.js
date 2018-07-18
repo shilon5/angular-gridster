@@ -915,6 +915,7 @@
 		 * @param {Number} column
 		 */
 		this.setPosition = function(row, column) {
+
 			this.gridster.putItem(this, row, column);
 
 			if (!this.isMoving()) {
@@ -2130,6 +2131,8 @@
 
 					function positionChanged() {
 						// call setPosition so the element and gridster controller are updated
+						item.row = Math.max(0, item.row);
+						item.col = Math.max(0, item.col);
 						item.setPosition(item.row, item.col);
 
 						// when internal item position changes, update externally bound values
