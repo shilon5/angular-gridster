@@ -356,7 +356,14 @@
 				if (!this.grid[row]) {
 					this.grid[row] = [];
 				}
-				this.grid[row][column] = item;
+
+				if ( column < 0 ){
+					this.grid[row].push(item);
+					// item.oldColumn = item.col = this.grid[row].indexOf(item);
+				}
+				else {
+					this.grid[row][column] = item;
+				}
 
 				if (this.movingItem === item) {
 					this.floatItemUp(item);
