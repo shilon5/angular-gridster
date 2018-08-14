@@ -804,16 +804,23 @@
 							if (gridster.loaded) {
 								if (prevColumns !== gridster.columns) {
 									//console.log('resize - columns changed from '+  prevColumns + ' into ' + gridster.columns);
-									prevColumns = gridster.columns;
-
-									if ( gridster.floating ) {
-										var allItems = gridster.getAllItems();
-
-										for (var i = 0; i < allItems.length; i++) {
-											var item = allItems[i];
-											gridster.autoSetItemPosition(item);
+									if ( prevColumns === 0 ){
+										if ( !gridster.floating ){
+											prevColumns = gridster.columns;
+											return;
 										}
 									}
+
+									prevColumns = gridster.columns;
+
+
+									var allItems = gridster.getAllItems();
+
+									for (var i = 0; i < allItems.length; i++) {
+										var item = allItems[i];
+										gridster.autoSetItemPosition(item);
+									}
+
 								}
 
 								$elem.addClass('gridster-loaded');
