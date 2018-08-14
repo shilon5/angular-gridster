@@ -806,11 +806,13 @@
 									//console.log('resize - columns changed from '+  prevColumns + ' into ' + gridster.columns);
 									prevColumns = gridster.columns;
 
-									var allItems = gridster.getAllItems();
+									if ( gridster.floating ) {
+										var allItems = gridster.getAllItems();
 
-									for (var i = 0; i < allItems.length; i++) {
-										var item = allItems[i];
-										gridster.autoSetItemPosition(item);
+										for (var i = 0; i < allItems.length; i++) {
+											var item = allItems[i];
+											gridster.autoSetItemPosition(item);
+										}
 									}
 								}
 
