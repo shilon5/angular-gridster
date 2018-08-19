@@ -804,12 +804,12 @@
 							if (gridster.loaded) {
 								if (prevColumns !== gridster.columns) {
 									//console.log('resize - columns changed from '+  prevColumns + ' into ' + gridster.columns);
-									if ( prevColumns === 0 ){
-										if ( !gridster.floating ){
-											prevColumns = gridster.columns;
-											return;
-										}
-									}
+									// if ( prevColumns === 0 ){
+									// 	if ( !gridster.floating ){
+									// 		prevColumns = gridster.columns;
+									// 		return;
+									// 	}
+									// }
 
 									prevColumns = gridster.columns;
 
@@ -818,7 +818,7 @@
 
 									for (var i = 0; i < allItems.length; i++) {
 										var item = allItems[i];
-										gridster.autoSetItemPosition(item);
+										gridster.putItem(item);
 									}
 
 								}
@@ -2147,8 +2147,8 @@
 
 					function positionChanged() {
 						// call setPosition so the element and gridster controller are updated
-						item.row = Math.max(0, item.row);
-						item.col = Math.max(0, item.col);
+						item.row = item.row !== null ? Math.max(0, item.row) : null;
+						item.col = item.col !== null ? Math.max(0, item.col) : null;
 						item.setPosition(item.row, item.col);
 
 						// when internal item position changes, update externally bound values
